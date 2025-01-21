@@ -9,9 +9,10 @@
 class Interval{
 	public:
 	double min, max;
-	static const Interval empty, universe;
+	static const Interval Intv_Empty, Intv_Universe;
 	Interval();
 	Interval(double pmin, double pmax);
+	Interval(const Interval&a, const Interval& b);
 
 	double size() const;
 
@@ -20,8 +21,10 @@ class Interval{
 	bool surrounds(double x) const;
 
 	double clamp(double x) const;
+
+	Interval expand(double x) const;
 };
 
-const extern Interval empty;
-const extern Interval universe;
+const extern Interval Intv_Empty;
+const extern Interval Intv_Universe;
 #endif //INTERVAL_H

@@ -1,4 +1,5 @@
 
+#include "Bvh.h"
 #include "Camera.h"
 #include "Material.h"
 #include "Sphere.h"
@@ -14,7 +15,7 @@ const double ASPECT_RATIO = 16.0/9.0;
 
 int main() {
 	//camera 256
-	Camera camera(256, ASPECT_RATIO, 50);
+	Camera camera(400, ASPECT_RATIO, 50);
 	camera.vFOV = 70.0;
 	camera.maxBounce = 10;
 
@@ -64,6 +65,7 @@ int main() {
 	objList.add(std::make_shared<Sphere>(point3(3, 1.5, -4), 1.5, metalBall1));
 	objList.add(std::make_shared<Sphere>(point3(-3, 0.7, -3), 0.7, glassBall));
 	*/
+
 	camera.eye = point3(2,1.3,3);
 	camera.lookAt = point3(0,0,-10);
 	camera.up = vec3(0,1,0);
@@ -76,17 +78,18 @@ int main() {
 			if((center-point3(4, radius, 0)).length() > 0.9) {
 				color c = color::random()*color::random();
 				std::shared_ptr<Material> material = std::make_shared<Lambertian>(c);
-				objList.add(std::make_shared<Sphere>(center, radius, material));
+				point3 center2 = center+vec3(0,random_double(0,0.5), 0);
+				objList.add(std::make_shared<Sphere>(center, center2, radius, material));
 			}
 		}
 	}
-
-
 	//objList.add(std::make_shared<Sphere>(point3(-10, -3, -25), 8, yellowDiff));
 	objList.add(std::make_shared<Sphere>(point3(3, 1.5, -3), 1.5, purpleDiff));
 	objList.add(std::make_shared<Sphere>(point3(-1, 1, -1), 1, metalBall1));
 	objList.add(std::make_shared<Sphere>(point3(-3, 0.7, -3), 0.7, glassBall));
 
 
+
+	objList = HittableList(std::make_shared<BvhNode>(objList));
 	camera.render(objList);
 }

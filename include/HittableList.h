@@ -6,10 +6,11 @@
 #define HITTABLELIST_H
 
 #include "Hittable.h"
-
+#include "Bbox.h"
 #include <vector>
 
 class HittableList : public Hittable{
+	Bbox bb;
 public:
 	std::vector<std::shared_ptr<Hittable>> objs;
 	HittableList();
@@ -17,7 +18,8 @@ public:
 
 	void add(std::shared_ptr<Hittable> obj);
 	void clear();
-	bool hit(const Ray& r, Interval rayIntv, hit_record& hr) const;
+	bool hit(const Ray& r, Interval rayIntv, hit_record& hr) const override;
+	Bbox boundingBox() const override;
 };
 
 

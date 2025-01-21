@@ -5,6 +5,10 @@
 
 Interval::Interval() : min(+infinity), max(-infinity){}
 Interval::Interval(double pmin, double pmax) : min(pmin), max(pmax){}
+Interval::Interval(const Interval&a, const Interval& b) {
+	min = std::min(a.min, b.min);
+	max = std::max(a.max, b.max);
+}
 
 double Interval::size() const {
 	return max - min;
@@ -24,5 +28,10 @@ double Interval::clamp(double x) const {
 	return x;
 }
 
-const Interval Interval::empty = Interval();
-const Interval Interval::universe = Interval(-infinity, +infinity);
+Interval Interval::expand(double x) const {
+	double padding = x/2.0;
+	return Interval(min-padding, max+padding);
+}
+
+const Interval Interval::Intv_Empty = Interval();
+const Interval Interval::Intv_Universe = Interval(-infinity, +infinity);

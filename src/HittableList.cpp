@@ -15,6 +15,7 @@ void HittableList::clear() {
 }
 void HittableList::add(std::shared_ptr<Hittable> obj) {
 	objs.push_back(obj);
+	bb = Bbox(bb, obj->boundingBox());
 }/*
 void HittableList::add(Hittable&& obj) {
 	Hittable* temp = new Hittable(std::move(obj));
@@ -33,4 +34,8 @@ bool HittableList::hit(const Ray& r, Interval rayIntv, hit_record& hr) const {
 		}
 	}
 	return hit;
+}
+
+Bbox HittableList::boundingBox() const {
+	return bb;
 }

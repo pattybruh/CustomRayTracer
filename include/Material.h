@@ -24,7 +24,7 @@ public:
 	bool scatter(const Ray& r, const hit_record& rec, color& atten, Ray& scatter) const override{
 		vec3 scatterDir = rec.normal + random_unit_vector();
 		if(scatterDir.nearly_zero()) scatterDir = rec.normal;
-		scatter = Ray(rec.p, scatterDir);
+		scatter = Ray(rec.p, scatterDir, r.time());
 		atten = m_reflectCoeff;
 		return true;
 	}
@@ -38,7 +38,7 @@ public:
 	Metal(const color& c, const double fuzz) : m_reflectCoeff(c), m_fuzzCoeff(fuzz < 1 ? fuzz : 1) {}
 	bool scatter(const Ray& r, const hit_record& rec, color& atten, Ray& scatter) const override{
 		vec3 reflectDir = unit_vector(reflect(r.direction(), rec.normal)) + (m_fuzzCoeff * random_unit_vector());
-		scatter = Ray(rec.p, reflectDir);
+		scatter = Ray(rec.p, reflectDir, r.time());
 		atten = m_reflectCoeff;
 		return dot(scatter.direction(), rec.normal) > 0;
 	}
@@ -64,10 +64,10 @@ public:
 		double sinT = std::sqrt(1.0-cosT*cosT);
 
 		if(ridx * sinT > 1.0 || reflectance(cosT, ridx) > random_double()) {
-			scatter = Ray(rec.p, reflect(unitDir, rec.normal));
+			scatter = Ray(rec.p, reflect(unitDir, rec.normal), r.time());
 		}
 		else {
-			scatter = Ray(rec.p, refract(unitDir, rec.normal, ridx));
+			scatter = Ray(rec.p, refract(unitDir, rec.normal, ridx), r.time());
 		}
 		return true;
 	}

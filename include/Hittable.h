@@ -8,6 +8,7 @@
 //#include "utility.h"
 #include "Ray.h"
 #include "Interval.h"
+#include "Bbox.h"
 
 class Material;
 
@@ -30,5 +31,6 @@ class Hittable{
 public:
 	virtual ~Hittable() = default;
 	virtual bool hit(const Ray& r, Interval rayIntv, hit_record& hr) const = 0;
+	virtual Bbox boundingBox() const = 0;
 };
 #endif //HITTABLE_H
