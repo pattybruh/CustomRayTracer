@@ -184,22 +184,14 @@ void light() {
 
 
 	std::shared_ptr<CheckerTexture> checkerGround = std::make_shared<CheckerTexture>(0.3, color(0.1, 0.1, 0.1), color(.9,.9,.9));
-	std::shared_ptr<Material> purpleDiff= std::make_shared<Lambertian>(color(0.557, 0.141, 0.667));//142, 36, 170
-
-	//objList.add(std::make_shared<Sphere>(point3(0, -1000, 0), 1000, std::make_shared<Lambertian>(checkerGround)));
+	std::shared_ptr<Material> purpleDiff= std::make_shared<Lambertian>(color(0.557, 0.141, 0.667));
 
 	objList.add(std::make_shared<Sphere>(point3(0,-1000, 0), 1000, std::make_shared<Lambertian>(checkerGround)));
 	objList.add(std::make_shared<Sphere>(point3(0, 2, -5), 2, purpleDiff));
 
-	//std::shared_ptr<DiffuseLight> light = std::make_shared<DiffuseLight>(color(1, 1, 1));
-	//objList.add(std::make_shared<Quad>(point3(-3, 0, -4.5), vec3(0,0,1.5), vec3(0,3,0), light));
-	//int お = 1;
-	std::shared_ptr<DiffuseLight> お = std::make_shared<DiffuseLight>(color(3, 3, 3));
-	objList.add(std::make_shared<Sphere>(point3(0, 7, -5), 1, お));
+	std::shared_ptr<DiffuseLight> light = std::make_shared<DiffuseLight>(color(3, 3, 3));
+	objList.add(std::make_shared<Sphere>(point3(0, 7, -5), 1, light));
 
-
-
-	//objList.add(std::make_shared<Sphere>(point3(-10, -3, -25), 8, yellowDiff));
 	objList = HittableList(std::make_shared<BvhNode>(objList));
 	camera.render(objList);
 }

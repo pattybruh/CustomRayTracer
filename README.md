@@ -23,9 +23,9 @@ Sample renders:
 ![render1](renders/image1.jpg)
 1920x1080 render showing the different materials at 50 samples/pixel
 
-
-![render2](renders/image2.jpg)
-1280x720 render
-
 ![render3](renders/image3.jpg)
 1280x720 render with motion blur on some balls
+
+![shadow render](renders/image4.jpg)
+
+Low quality render with light source
