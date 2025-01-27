@@ -5,17 +5,28 @@
 #include "Bbox.h"
 
 Bbox::Bbox(){}
-Bbox::Bbox(const Interval& x, const Interval& y, const Interval& z) : x(x), y(y), z(z){}
+Bbox::Bbox(const Interval& x, const Interval& y, const Interval& z) : x(x), y(y), z(z) {
+	minPadding();
+}
 Bbox::Bbox(const point3& a, const point3& b) {
 	x = (a[0]<b[0]) ? Interval(a[0], b[0]) : Interval(b[0], a[0]);
 	y = (a[1]<b[1]) ? Interval(a[1], b[1]) : Interval(b[1], a[1]);
 	z = (a[2]<b[2]) ? Interval(a[2], b[2]) : Interval(b[2], a[2]);
+
+	minPadding();
 }
 Bbox::Bbox(const Bbox&a, const Bbox&b) {
 	x = Interval(a.x, b.x);
 	y = Interval(a.y, b.y);
 	z = Interval(a.z, b.z);
 }
+
+void Bbox::minPadding() {
+	if(x.size() < 0.0001) x=x.expand(0.0001);
+	if(y.size() < 0.0001) y=y.expand(0.0001);
+	if(z.size() < 0.0001) z=z.expand(0.0001);
+}
+
 
 const Interval& Bbox::axisInterval(int n) const {
 	if(n==1) return y;

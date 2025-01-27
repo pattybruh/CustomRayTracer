@@ -10,6 +10,8 @@ add_executable(RayTracer src/main.cpp
         src/Interval.cpp
         src/Bbox.cpp
         src/Bvh.cpp
+        src/Quad.cpp
+        src/Texture.cpp
 )
 
 target_include_directories(RayTracer PUBLIC include/)

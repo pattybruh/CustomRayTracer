@@ -7,6 +7,7 @@
 
 #include "color.h"
 #include "Hittable.h"
+#include "Texture.h"
 
 class Material{
 public:
@@ -14,18 +15,22 @@ public:
 	virtual bool scatter(const Ray& r, const hit_record& rec, color& atten, Ray& scatter) const {
 		return false;
 	}
+	virtual color emit(double u, double v, const point3& p) const {
+		return color(0, 0, 0);
+	}
 };
 
 class Lambertian : public Material{
 private:
-	color m_reflectCoeff;
+	std::shared_ptr<Texture> m_text;
 public:
-	Lambertian(const color& c) : m_reflectCoeff(c) {}
+	Lambertian(const color& c) : m_text(std::make_shared<SolidColorTexture>(c)) {}
+	Lambertian(std::shared_ptr<Texture> text) : m_text(text) {}
 	bool scatter(const Ray& r, const hit_record& rec, color& atten, Ray& scatter) const override{
 		vec3 scatterDir = rec.normal + random_unit_vector();
 		if(scatterDir.nearly_zero()) scatterDir = rec.normal;
 		scatter = Ray(rec.p, scatterDir, r.time());
-		atten = m_reflectCoeff;
+		atten = m_text->value(rec.u, rec.v, rec.p);
 		return true;
 	}
 };
@@ -70,6 +75,17 @@ public:
 			scatter = Ray(rec.p, refract(unitDir, rec.normal, ridx), r.time());
 		}
 		return true;
+	}
+};
+
+class DiffuseLight : public Material{
+	private:
+	std::shared_ptr<Texture> m_text;
+public:
+	DiffuseLight(std::shared_ptr<Texture> text) : m_text(text) {}
+	DiffuseLight(const color& emit) : m_text(std::make_shared<SolidColorTexture>(emit)) {}
+	color emit(double u, double v, const point3& p) const override {
+		return m_text->value(u, v, p);
 	}
 };
 

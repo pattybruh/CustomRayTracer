@@ -17,7 +17,7 @@ public:
 	point3 p;
 	vec3 normal;
 	std::shared_ptr<Material> mat;
-	double t;
+	double t,u,v;
 	bool front_face;
 
 	void set_face_normal(const Ray& r, const vec3& outward_normal) {

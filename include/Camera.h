@@ -33,6 +33,7 @@ public:
 	vec3 up = vec3(0, 1, 0);
 	double focusDist = 10.0;
 	double focusAngle = 0;
+	color bgColor;
 
 
 	Camera(int imgW, double aspectRatio, int samplesPerPixel);

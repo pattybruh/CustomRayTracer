@@ -39,16 +39,18 @@ color Camera::ray_color(const Ray& r, const Hittable& obj, int bounce) const {
 	}
 	hit_record rec;
 
-	if(obj.hit(r, Interval(0.001, infinity), rec)) {//0.001 fix shadow acne by ignoring close hits
+	if(!obj.hit(r, Interval(0.001, infinity), rec)) {//0.001 fix shadow acne by ignoring close hits
 		//return 0.5 * (rec.normal+color(1,1,1));
-		Ray scatter;
-		color atten;
-		if(rec.mat->scatter(r, rec, atten, scatter)) {
-			return atten*ray_color(scatter, obj, bounce-1);
-		}
-		return color(0.0, 0.0, 0.0);;
+		return bgColor;
 	}
-
+	Ray scatter;
+	color atten;
+	color emitColor = rec.mat->emit(rec.u, rec.v, rec.p);
+	if(!rec.mat->scatter(r, rec, atten, scatter)) {
+		return emitColor;
+	}
+	return emitColor + (atten*ray_color(scatter, obj, bounce-1));
+	return color(0.0, 0.0, 0.0);
 	//bg color
 	vec3 unitDir = unit_vector(r.direction());
 	double a = 0.5 * (unitDir.y()+1.0);

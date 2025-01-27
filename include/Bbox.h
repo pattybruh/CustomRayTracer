@@ -10,6 +10,7 @@
 
 
 class Bbox {
+	void minPadding();
 public:
 	Interval x,y,z;
 	static const Bbox Bbox_Empty, Bbox_Universe;
